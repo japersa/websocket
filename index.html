@@ -11,14 +11,14 @@
     <script>
         let socket = io('http://localhost:9999').on('connect',(_socket)=>{
             console.log("connected");
-            socket.on("client:newNote",(value) =>{
-                document.getElementById("notes").innerHTML += `\n${JSON.stringify(value)}`;
+            socket.on("client:event",(value) =>{
+                document.getElementById("notes").innerHTML = `${JSON.stringify(value)}`;
             });
         });
 
        function sendMessage(){
             let message = document.getElementById("message").value;
-            socket.emit('server:newNote', message);
+            socket.emit('server:event', message);
        }
           
     </script>
