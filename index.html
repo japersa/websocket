@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crud websockets</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="./main.css">
+    <script src="http://localhost:9999/socket.io/socket.io.min.js"></script>
+    <script>
+        let socket = io('http://localhost:9999').on('connect',(_socket)=>{
+            console.log("connected");
+            socket.on("client:newNote",(value) =>{
+                document.getElementById("notes").innerHTML += `\n${JSON.stringify(value)}`;
+            });
+        });
+
+       function sendMessage(){
+            let message = document.getElementById("message").value;
+            socket.emit('server:newNote', message);
+       }
+          
+    </script>
+</head>
+<body>
+   <div class="container h-100">
+    <div class="row h-100">
+        <div class="col-md-4 my-auto"> 
+              <h3>Add note</h3>
+                <input type="text" id="message" name="message" placeholder="Escribe un  titulo" class="form-control rounded-0 mb-3" autofocus >
+                <button class="btn btn-dark rounded-0" onclick="sendMessage()">Enviar</button>
+        </div>
+        <div class="col md 8">
+            note
+            <div id="notes"></div>
+        </div>
+    </div>
+   </div>
+</body>
+</html>
